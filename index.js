@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: "https://zaid5775.github.io/cipherscape", // Replace with your React app's URL
+  origin: "https://cipherscape.onrender.com", // Replace with your React app's URL
   credentials: true
 }));
 
@@ -78,9 +78,9 @@ app.get("/", verifyToken, (req, res) => {
   return res.json({ success: true, username: req.user.username });
 });
 
-app.get("/hello", () => {
-  return res.json("hello");
-});
+// app.get("/hello", () => {
+//   return res.json("hello");
+// });
 
 app.post("/Signup", (req, res) => {
   const { username, password, email } = req.body;
