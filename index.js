@@ -76,7 +76,7 @@ app.post("/Login", (req, res) => {
           // const token = jwt.sign({ username: user.username }, "my_secret_key");
           // res.cookie("session_token", token, { httpOnly: true });
           req.session.username = user.username
-          res.json({ success: true, username: req.session.username });
+          res.json({ success: true, username: user.username});
         } else {
           res.json({ success: false, message: "Incorrect Password!" });
         }
@@ -87,8 +87,8 @@ app.post("/Login", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  if(req.session.username){
-    return   res.json({ success: true, username: req.session.username });
+  if(user.username){
+    return   res.json({ success: true, username: user.username });
   }else{
     return res.json({success :  false})
   }
