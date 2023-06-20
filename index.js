@@ -78,6 +78,10 @@ app.get("/", verifyToken, (req, res) => {
   return res.json({ success: true, username: req.user.username });
 });
 
+app.get("/hello", ( res) => {
+  return res.json("hello");
+});
+
 app.post("/Signup", (req, res) => {
   const { username, password, email } = req.body;
   PlayersModel.findOne({ username: username })
