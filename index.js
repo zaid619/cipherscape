@@ -3,6 +3,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
+import session from "express-session";
 import jwt from "jsonwebtoken";
 import path from 'path';
 import dotenv from 'dotenv';
@@ -22,6 +23,15 @@ app.use(cors({
   credentials: true
 }));
 
+app.use(session({
+  secret : "areyougay",
+  resave : false,
+  saveUninitialized : false,
+  cookie : {
+    secure :  false,
+    maxAge : 1000 * 60 * 60 * 24
+  }
+}))
 console.log("connecting db...")
 
 mongoose.connect("mongodb+srv://szaid5775:7208724253@cluster.epkwhq7.mongodb.net/Players", {
@@ -41,21 +51,21 @@ const PlayersSchema = new mongoose.Schema({
 
 const PlayersModel = new mongoose.model("players", PlayersSchema);
 
-// Middleware to verify the JWT token
-const verifyToken = (req, res, next) => {
-  const token = req.cookies.session_token;
-  if (!token) {
-    return res.status(401).json({ success: false, message: "Access denied" });
-  }
+// // Middleware to verify the JWT token
+// const verifyToken = (req, res, next) => {
+//   const token = req.cookies.session_token;
+//   if (!token) {
+//     return res.status(401).json({ success: false, message: "Access denied" });
+//   }
 
-  try {
-    const decoded = jwt.verify(token, "my_secret_key");
-    req.user = decoded;
-    next();
-  } catch (err) {
-    return res.status(400).json({ success: false, message: "Invalid token" });
-  }
-};
+//   try {
+//     const decoded = jwt.verify(token, "my_secret_key");
+//     req.user = decoded;
+//     next();
+//   } catch (err) {
+//     return res.status(400).json({ success: false, message: "Invalid token" });
+//   }
+// };
 
 app.post("/Login", (req, res) => {
   const { username, password } = req.body;
@@ -63,9 +73,10 @@ app.post("/Login", (req, res) => {
     .then((user) => {
       if (user) {
         if (user.password === password) {
-          const token = jwt.sign({ username: user.username }, "my_secret_key");
-          res.cookie("session_token", token, { httpOnly: true });
-          res.json({ success: true, username: user.username });
+          // const token = jwt.sign({ username: user.username }, "my_secret_key");
+          // res.cookie("session_token", token, { httpOnly: true });
+          req.session.username = user.username
+          res.json({ success: true, username: req.session.username });
         } else {
           res.json({ success: false, message: "Incorrect Password!" });
         }
@@ -75,8 +86,13 @@ app.post("/Login", (req, res) => {
     });
 });
 
-app.get("/", verifyToken, (req, res) => {
-  return res.json({ success: true, username: req.user.username });
+app.get("/", (req, res) => {
+  if(req.session.username){
+    return   res.json({ success: true, username: req.session.username });
+  }else{
+    return res.json({success :  false})
+  }
+ 
 });
 
 // app.get("/hello", () => {
