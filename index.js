@@ -23,7 +23,7 @@ app.use(cors({
 
 console.log("connecting db...")
 
-mongoose.connect(process.env.MY_APP_URL, {
+mongoose.connect("mongodb+srv://szaid5775:720872453@cluster.epkwhq7.mongodb.net/Players", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   dbName: "Players"
@@ -106,8 +106,8 @@ app.post("/Signup", (req, res) => {
 // });
 
 
-const PORT = process.env.PORT
+// const PORT = process.env.PORT
 // Start the server
-app.listen(PORT, () => {
+app.listen(9002, () => {
   console.log("Server is running on port 9002");
 });
