@@ -4,10 +4,9 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import session from "express-session";
-import jwt from "jsonwebtoken";
-import path from 'path';
-import dotenv from 'dotenv';
-dotenv.config();
+import MongoStore from "connect-mongo";
+
+
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
@@ -23,6 +22,13 @@ app.use(cors({
   credentials: true
 }));
 
+const sessionStore = MongoStore.create({
+  mongoUrl: "mongodb+srv://szaid5775:7208724253@cluster.epkwhq7.mongodb.net/Players",
+  collectionName: "sessions",
+  ttl: 60 * 60 * 24, // session TTL (optional)
+});
+
+
 app.use(session({
   secret : "areyougay",
   resave : false,
@@ -30,7 +36,8 @@ app.use(session({
   cookie : {
     secure :  false,
     maxAge : 1000 * 60 * 60 * 24
-  }
+  },
+  store: sessionStore,
 }))
 console.log("connecting db...")
 
@@ -51,21 +58,7 @@ const PlayersSchema = new mongoose.Schema({
 
 const PlayersModel = new mongoose.model("players", PlayersSchema);
 
-// // Middleware to verify the JWT token
-// const verifyToken = (req, res, next) => {
-//   const token = req.cookies.session_token;
-//   if (!token) {
-//     return res.status(401).json({ success: false, message: "Access denied" });
-//   }
 
-//   try {
-//     const decoded = jwt.verify(token, "my_secret_key");
-//     req.user = decoded;
-//     next();
-//   } catch (err) {
-//     return res.status(400).json({ success: false, message: "Invalid token" });
-//   }
-// };
 
 app.post("/Login", (req, res) => {
   const { username, password } = req.body;
@@ -73,10 +66,8 @@ app.post("/Login", (req, res) => {
     .then((user) => {
       if (user) {
         if (user.password === password) {
-          // const token = jwt.sign({ username: user.username }, "my_secret_key");
-          // res.cookie("session_token", token, { httpOnly: true });
-          req.session.username = user.username
-          res.json({ success: true, username: user.username});
+          req.session.username = user.username;
+          res.json({ success: true, username: req.session.username });
         } else {
           res.json({ success: false, message: "Incorrect Password!" });
         }
@@ -86,18 +77,26 @@ app.post("/Login", (req, res) => {
     });
 });
 
-app.get("/", (req, res) => {
-  if(user.username){
-    return   res.json({ success: true, username: user.username });
-  }else{
-    return res.json({success :  false})
-  }
- 
-});
 
-// app.get("/hello", () => {
-//   return res.json("hello");
-// });
+
+
+app.get("/", (req, res) => {
+  if (req.session.username) {
+    return res.json({ success: true, username: req.session.username });
+  } else if (req.sessionID) {
+    // If session ID exists, fetch session data from the store
+    sessionStore.get(req.sessionID, (err, session) => {
+      if (session && session.username) {
+        req.session.username = session.username;
+        return res.json({ success: true, username: req.session.username });
+      } else {
+        return res.json({ success: false });
+      }
+    });
+  } else {
+    return res.json({ success: false });
+  }
+});
 
 app.post("/Signup", (req, res) => {
   const { username, password, email } = req.body;
@@ -114,17 +113,6 @@ app.post("/Signup", (req, res) => {
     .catch((err) => res.json(err));
 });
 
-// Serve the static files for your React app
-// app.use(express.static(path.join(__dirname, "../cipherscape")));
-
-// // For any other route, serve the index.html file
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../cipherscape/index.html"));
-// });
-
-
-// const PORT = process.env.PORT
-// Start the server
 app.listen(9002, () => {
   console.log("Server is running on port 9002");
 });
