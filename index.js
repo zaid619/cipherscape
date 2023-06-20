@@ -21,7 +21,12 @@ app.use(cors({
   credentials: true
 }));
 
-mongoose.connect(process.env.MY_APP_URL);
+mongoose.connect(process.env.MY_APP_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  dbName: "Players"
+});
+
 console.log("DB connected");
 
 const PlayersSchema = new mongoose.Schema({
