@@ -17,14 +17,17 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: "http://zaid5775.github.io/cipherscape", // Replace with your React app's URL
+  origin: "https://zaid5775.github.io/cipherscape", // Replace with your React app's URL
   credentials: true
 }));
+
+console.log("connecting db...")
 
 mongoose.connect(process.env.MY_APP_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   dbName: "Players"
+  
 });
 
 console.log("DB connected");
