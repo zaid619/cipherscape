@@ -67,6 +67,9 @@ app.post("/Login", (req, res) => {
       if (user) {
         if (user.password === password) {
           req.session.username = user.username;
+          console.log(user[0].username)
+          console.log(user.username)
+          console.log(req.session.username)
           res.json({ success: true, username: req.session.username });
         } else {
           res.json({ success: false, message: "Incorrect Password!" });
