@@ -23,7 +23,7 @@ app.use(cors({
 
 console.log("connecting db...")
 
-mongoose.connect("mongodb+srv://szaid5775:720872253@cluster.epkwhq7.mongodb.net/Players", {
+mongoose.connect("mongodb+srv://szaid5775:7208724253@cluster.epkwhq7.mongodb.net/Players", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   dbName: "Players"
