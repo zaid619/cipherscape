@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: "https://cipherscape.onrender.com", // Replace with your React app's URL
+  origin: "http://localhost:3000",
   credentials: true
 }));
 
