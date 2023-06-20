@@ -78,7 +78,7 @@ app.get("/", verifyToken, (req, res) => {
   return res.json({ success: true, username: req.user.username });
 });
 
-app.get("/hello", ( res) => {
+app.get("/hello", () => {
   return res.json("hello");
 });
 
