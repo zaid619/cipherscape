@@ -5,8 +5,7 @@ import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import jwt from "jsonwebtoken";
 import path from 'path';
-import dotenv from 'dotenv';
-dotenv.config();
+require('dotenv').config()
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
