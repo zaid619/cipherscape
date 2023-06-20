@@ -91,12 +91,12 @@ app.post("/Signup", (req, res) => {
 });
 
 // Serve the static files for your React app
-app.use(express.static(path.join(__dirname, "../cipherscape")));
+// app.use(express.static(path.join(__dirname, "../cipherscape")));
 
-// For any other route, serve the index.html file
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../cipherscape/index.html"));
-});
+// // For any other route, serve the index.html file
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../cipherscape/index.html"));
+// });
 
 
 const PORT = process.env.PORT
