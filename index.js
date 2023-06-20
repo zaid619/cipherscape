@@ -66,7 +66,7 @@ app.post("/Login", (req, res) => {
     });
 });
 
-app.get("/cipherscape", verifyToken, (req, res) => {
+app.get("/", verifyToken, (req, res) => {
   return res.json({ success: true, username: req.user.username });
 });
 
