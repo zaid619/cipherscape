@@ -75,8 +75,8 @@ app.post("/Login", (req, res) => {
     });
 });
 
-app.get("/", (req, res) => {
-  return res.json({ success: true, username: req.user.username });
+app.get("/", verifyToken, (req, res) => {
+  return res.json({ success: true, username: user.username });
 });
 
 // app.get("/hello", () => {
