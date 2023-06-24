@@ -6,6 +6,8 @@ import bodyParser from "body-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 
+import dotenv from 'dotenv'
+dotenv.config()
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -26,7 +28,7 @@ app.use(cors({
 //"https://cipherscape.onrender.com
 
 const sessionStore = MongoStore.create({
-  mongoUrl: "mongodb+srv://szaid5775:7208724253@cluster.epkwhq7.mongodb.net/Players",
+  mongoUrl: process.env.MY_APP_URL,
   collectionName: "sessions",
   ttl: 1000 * 60 * 60 * 24, // session TTL (optional)
 });
@@ -41,7 +43,7 @@ const sessionStore = MongoStore.create({
 // });
 
 app.use(session({
-  secret : "areyougay",
+  secret : process.env.Token_OMG,
   resave : false,
   saveUninitialized : false,
   cookie : {
@@ -51,8 +53,8 @@ app.use(session({
   store: sessionStore,
 }))
 console.log("connecting db...")
-
-mongoose.connect("mongodb+srv://szaid5775:7208724253@cluster.epkwhq7.mongodb.net/Players", {
+console.log(process.env.Token_OMG)
+mongoose.connect(process.env.MY_APP_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   dbName: "Players"
