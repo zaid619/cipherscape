@@ -118,7 +118,7 @@ app.post("/Signup", (req, res) => {
 
 
 
-app.get('/', (req, res) => {
+app.get('/user', (req, res) => {
   const { username } = req.session;
   
   PlayersModel.findOne({ username })
