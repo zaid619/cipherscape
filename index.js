@@ -15,6 +15,7 @@ const __dirname = dirname(__filename);
 const app = express();
 app.use(bodyParser.json());
 app.use(express.json());
+app.use(express.urlencoded({extended : false}))
 app.use(cookieParser());
 app.use(cors({
   origin: ["http://localhost:3000" , "192.168.0.102:3000" , "https://cipherscape.onrender.com"],
