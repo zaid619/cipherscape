@@ -27,7 +27,7 @@ app.use(cors({
 const sessionStore = MongoStore.create({
   mongoUrl: "mongodb+srv://szaid5775:7208724253@cluster.epkwhq7.mongodb.net/Players",
   collectionName: "sessions",
-  ttl: 60 * 60 * 24, // session TTL (optional)
+  ttl: 1000 * 60 * 60 * 24, // session TTL (optional)
 });
 
 
