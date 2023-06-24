@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: ["http://localhost:3000"],
+  origin: ["https://cipherscape.onrender.com/"],
   methods :  ["GET, POST"],
   credentials: true
 }));
@@ -118,7 +118,7 @@ app.post("/Signup", (req, res) => {
 
 
 
-app.get('/', (req, res) => {
+app.get('/user', (req, res) => {
   const { username } = req.session;
   
   PlayersModel.findOne({ username })
