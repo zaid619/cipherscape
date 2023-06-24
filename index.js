@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: ["https://cipherscape.onrender.com/"],
+  origin: ["http://localhost:3000"],
   methods :  ["GET, POST"],
   credentials: true
 }));
