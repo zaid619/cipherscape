@@ -117,9 +117,9 @@ app.post("/Signup", (req, res) => {
 
 
 app.get('/user', (req, res) => {
-  const { username, email } = req.body; // Assuming the username is sent as a query parameter
+  const { username } = req.session;
   
-  PlayersModel.findOne({ username  }, 'username email')
+  PlayersModel.findOne({ username }, 'username email')
     .then((user) => {
       if (user) {
         res.json({ success: true, email: user.email, username: user.username });
