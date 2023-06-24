@@ -116,7 +116,7 @@ app.post("/Signup", (req, res) => {
 
 
 app.get('/user', (req, res) => {
-  const { username } = req.query; // Assuming the username is sent as a query parameter
+  const { username } = req.body; // Assuming the username is sent as a query parameter
   
   PlayersModel.findOne({ username }, 'username email')
     .then((user) => {
