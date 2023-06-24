@@ -115,16 +115,13 @@ app.post("/Signup", (req, res) => {
 });
 
 
-
-
-
 app.get('/user', (req, res) => {
   const { username } = req.session;
   
-  PlayersModel.findOne({ username })
+  PlayersModel.findOne({ username }, 'username email')
     .then((user) => {
       if (user) {
-        res.json({ success: true, email: user.email, username });
+        res.json({ success: true, email: user.email, username: user.username });
       } else {
         res.json({ success: false, message: 'User not found' });
       }
