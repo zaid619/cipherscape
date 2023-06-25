@@ -27,20 +27,20 @@ app.use(cors({
 
 //"https://cipherscape.onrender.com
 
-const sessionStore = MongoStore.create({
-  mongoUrl: process.env.MY_APP_URL,
-  collectionName: "sessions",
-  ttl: 1000 * 60 * 60 * 24, // session TTL (optional)
-});
+// const sessionStore = MongoStore.create({
+//   mongoUrl: process.env.MY_APP_URL,
+//   collectionName: "sessions",
+//   ttl: 1000 * 60 * 60 * 24, // session TTL (optional)
+// });
 
 
 // localhost
 
-// const sessionStore = MongoStore.create({
-//   mongoUrl: "mongodb+srv://szaid5775:7208724253@cluster.epkwhq7.mongodb.net/Players",
-//   collectionName: "sessions",
-//   ttl: 60 * 60 * 24, // session TTL (optional)
-// });
+const sessionStore = MongoStore.create({
+  mongoUrl: "mongodb+srv://szaid5775:7208724253@cluster.epkwhq7.mongodb.net/Players",
+  collectionName: "sessions",
+  ttl: 60 * 60 * 24, // session TTL (optional)
+});
 
 app.use(session({
   secret : process.env.Token_OMG,
@@ -50,7 +50,11 @@ app.use(session({
     secure :  false,
     maxAge : 10000 * 60 * 60 * 24
   },
-  store: sessionStore,
+  store:  MongoStore.create({
+    mongoUrl: process.env.MY_APP_URL ,
+    collectionName: "sessions",
+    ttl: 60 * 60 * 24, // session TTL (optional)
+  })
 }))
 console.log("connecting db...")
 console.log(process.env.Token_OMG)
@@ -119,7 +123,7 @@ app.post("/Signup", (req, res) => {
 
 
 app.get('/user', (req, res) => {
-  const { username } = req.session.username;
+  const { username } = req.session;
   console.log('Username:', username);
   PlayersModel.findOne({ username }, 'username email')
     .then((user) => {
