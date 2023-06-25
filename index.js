@@ -27,20 +27,17 @@ app.use(cors({
 
 //"https://cipherscape.onrender.com
 
-// const sessionStore = MongoStore.create({
-//   mongoUrl: process.env.MY_APP_URL,
-//   collectionName: "sessions",
-//   ttl: 1000 * 60 * 60 * 24, // session TTL (optional)
-// });
+const sessionStore = MongoStore.create({
+  mongoUrl: process.env.MY_APP_URL,
+  collectionName: "sessions",
+  dbName : "Players",
+  ttl: 1000 * 60 * 60 * 24, // session TTL (optional)
+});
 
 
 // localhost
 
-const sessionStore = MongoStore.create({
-  mongoUrl: "mongodb+srv://szaid5775:7208724253@cluster.epkwhq7.mongodb.net/Players",
-  collectionName: "sessions",
-  ttl: 60 * 60 * 24, // session TTL (optional)
-});
+
 
 app.use(session({
   secret : process.env.Token_OMG,
@@ -50,19 +47,15 @@ app.use(session({
     secure :  false,
     maxAge : 10000 * 60 * 60 * 24
   },
-  store:  MongoStore.create({
-    mongoUrl: process.env.MY_APP_URL ,
-    collectionName: "sessions",
-    ttl: 60 * 60 * 24, // session TTL (optional)
-  })
+  store: sessionStore,
 }))
 console.log("connecting db...")
 console.log(process.env.Token_OMG)
 mongoose.connect(process.env.MY_APP_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  dbName: "Players"
-  
+  dbName: "Players",
+  store : sessionStore
 });
 
 console.log("DB connected");
