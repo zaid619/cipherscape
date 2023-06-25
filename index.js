@@ -51,12 +51,19 @@ app.use(session({
 }))
 console.log("connecting db...")
 console.log(process.env.Token_OMG)
+
+
 mongoose.connect(process.env.MY_APP_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   dbName: "Players",
-  store : sessionStore
+
 });
+
+
+mongoose.connect(process.env.MY_APP_URL ,{
+  store : sessionStore
+})
 
 console.log("DB connected");
 
