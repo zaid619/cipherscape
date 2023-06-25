@@ -119,7 +119,7 @@ app.post("/Signup", (req, res) => {
 
 
 app.get('/user', (req, res) => {
-  const { username } = req.session;
+  const { username } = req.session.username;
   console.log('Username:', username);
   PlayersModel.findOne({ username }, 'username email')
     .then((user) => {
